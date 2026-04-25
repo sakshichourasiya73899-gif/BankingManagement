@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeoBank — Banking Management System</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar glass">
+      <div class="logo">
+        <div class="logo-icon">N</div>
+        <div>
+          <h2>NeoBank</h2>
+          <p>Premium Banking</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-section="dashboard">
+          <span class="nav-icon">🏠</span> Dashboard
+        </button>
+        <button class="nav-item" data-section="account">
+          <span class="nav-icon">👤</span> Account Details
+        </button>
+        <button class="nav-item" data-section="deposit">
+          <span class="nav-icon">💰</span> Deposit
+        </button>
+        <button class="nav-item" data-section="withdraw">
+          <span class="nav-icon">💸</span> Withdraw
+        </button>
+        <button class="nav-item" data-section="history">
+          <span class="nav-icon">📜</span> Transactions
+        </button>
+        <button class="nav-item" data-section="reset">
+          <span class="nav-icon">⚠️</span> Reset
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>v1.0 · localStorage</p>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+      <!-- No account screen -->
+      <section class="section active" id="no-account">
+        <div class="card glass create-card">
+          <h1>Welcome to <span class="gradient-text">NeoBank</span></h1>
+          <p class="subtitle">Create your account to get started</p>
+
+          <form id="create-account-form" class="form">
+            <label>
+              Account Holder Name
+              <input type="text" id="holder-name" placeholder="John Doe" required />
+            </label>
+            <label>
+              Opening Balance (₹)
+              <input type="number" id="opening-balance" min="0" step="0.01" placeholder="1000" required />
+            </label>
+            <button type="submit" class="btn btn-primary">Create Account</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Dashboard -->
+      <section class="section" id="dashboard">
+        <header class="page-header">
+          <div>
+            <h1>Dashboard</h1>
+            <p class="subtitle">Welcome back, <span id="dash-name">—</span></p>
+          </div>
+        </header>
+
+        <div class="grid-3">
+          <div class="card glass stat-card">
+            <p class="stat-label">Current Balance</p>
+            <h2 class="stat-value gradient-text" id="dash-balance">₹0.00</h2>
+            <p class="stat-sub">Available funds</p>
+          </div>
+          <div class="card glass stat-card">
+            <p class="stat-label">Account Number</p>
+            <h2 class="stat-value" id="dash-account">—</h2>
+            <p class="stat-sub">Your unique ID</p>
+          </div>
+          <div class="card glass stat-card">
+            <p class="stat-label">Total Transactions</p>
+            <h2 class="stat-value" id="dash-tx-count">0</h2>
+            <p class="stat-sub">All-time activity</p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card glass">
+            <h3>Quick Actions</h3>
+            <div class="quick-actions">
+              <button class="btn btn-primary" data-jump="deposit">+ Deposit</button>
+              <button class="btn btn-outline" data-jump="withdraw">− Withdraw</button>
+              <button class="btn btn-ghost" data-jump="history">View History</button>
+            </div>
+          </div>
+          <div class="card glass">
+            <h3>Recent Transactions</h3>
+            <ul class="tx-list" id="dash-recent"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Account details -->
+      <section class="section" id="account">
+        <header class="page-header">
+          <h1>Account Details</h1>
+          <p class="subtitle">Your personal banking information</p>
+        </header>
+
+        <div class="card glass detail-card">
+          <div class="detail-row">
+            <span>Account Holder</span>
+            <strong id="acc-name">—</strong>
+          </div>
+          <div class="detail-row">
+            <span>Account Number</span>
+            <strong id="acc-number">—</strong>
+          </div>
+          <div class="detail-row">
+            <span>Current Balance</span>
+            <strong class="gradient-text" id="acc-balance">$0.00</strong>
+          </div>
+          <div class="detail-row">
+            <span>Created</span>
+            <strong id="acc-created">—</strong>
+          </div>
+
+          <div class="danger-zone">
+            <h4>Danger Zone</h4>
+            <button class="btn btn-danger" id="delete-account-btn">Delete Account</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Deposit -->
+      <section class="section" id="deposit">
+        <header class="page-header">
+          <h1>Deposit Money</h1>
+          <p class="subtitle">Add funds to your account</p>
+        </header>
+
+        <div class="card glass form-card">
+          <form id="deposit-form" class="form">
+            <label>
+              Amount (₹)
+              <input type="number" id="deposit-amount" min="0.01" step="0.01" placeholder="100.00" required />
+            </label>
+            <label>
+              Note (optional)
+              <input type="text" id="deposit-note" placeholder="Salary, Refund, etc." />
+            </label>
+            <button type="submit" class="btn btn-primary">Deposit</button>
+          </form>
+          <p class="hint">Current balance: <strong id="deposit-balance">₹0.00</strong></p>
+        </div>
+      </section>
+
+      <!-- Withdraw -->
+      <section class="section" id="withdraw">
+        <header class="page-header">
+          <h1>Withdraw Money</h1>
+          <p class="subtitle">Take out funds from your account</p>
+        </header>
+
+        <div class="card glass form-card">
+          <form id="withdraw-form" class="form">
+            <label>
+              Amount (₹)
+              <input type="number" id="withdraw-amount" min="0.01" step="0.01" placeholder="50.00" required />
+            </label>
+            <label>
+              Note (optional)
+              <input type="text" id="withdraw-note" placeholder="Rent, Groceries, etc." />
+            </label>
+            <button type="submit" class="btn btn-primary">Withdraw</button>
+          </form>
+          <p class="hint">Available balance: <strong id="withdraw-balance">₹0.00</strong></p>
+        </div>
+      </section>
+
+      <!-- History -->
+      <section class="section" id="history">
+        <header class="page-header">
+          <h1>Transaction History</h1>
+          <p class="subtitle">All movements on your account</p>
+        </header>
+
+        <div class="card glass">
+          <ul class="tx-list" id="full-history"></ul>
+          <p id="empty-history" class="empty">No transactions yet.</p>
+        </div>
+      </section>
+
+      <!-- Reset -->
+      <section class="section" id="reset">
+        <header class="page-header">
+          <h1>Reset</h1>
+          <p class="subtitle">Wipe all stored data from this browser</p>
+        </header>
+
+        <div class="card glass">
+          <p>This will permanently delete your account, balance and entire transaction history stored in localStorage. This action cannot be undone.</p>
+          <button class="btn btn-danger" id="reset-all-btn">Reset All Data</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
